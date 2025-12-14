@@ -7,6 +7,8 @@
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="icon" href="icon.png">
     <title>Futu Clone</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Oswald:wght@500;600&display=swap');
@@ -26,8 +28,8 @@
             --tab-active: #FDF4EB;
             --tab-text-active: #FF6800;
             --nav-height: 50px;
-            /* Force extra padding for iPhone Notch/Dynamic Island matching user request */
-            --safe-area-top: calc(env(safe-area-inset-top) + 44px);
+            /* SafeArea: Just the notch height */
+            --safe-area-top: env(safe-area-inset-top);
             --safe-area-bottom: env(safe-area-inset-bottom);
         }
 
@@ -60,7 +62,8 @@
             flex: 1;
             overflow-y: auto;
             overflow-x: hidden;
-            padding-top: var(--safe-area-top);
+            /* Remove top padding so the sticky header can go to the very top */
+            padding-top: 0;
             padding-bottom: calc(var(--nav-height) + 20px + var(--safe-area-bottom));
             background-color: var(--secondary-bg);
             height: 100%;
@@ -142,18 +145,24 @@
             display: inline-block;
         }
 
-        /* Headers */
+        /* Headers - Sticky & Safe Area Aware */
+        /* Headers - Sticky & Safe Area Aware */
         .nav-bar {
-            height: 44px;
-            background: var(--primary-bg);
+            width: 100%;
+            height: calc(44px + var(--safe-area-top));
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 16px;
+
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
+
+            background: var(--primary-bg);
             border-bottom: 0.5px solid transparent;
+
+            /* Top padding for notch, side padding for content */
+            padding: var(--safe-area-top) 16px 0 16px;
         }
 
         .nav-bar.bordered {
